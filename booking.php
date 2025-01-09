@@ -8,17 +8,28 @@
 <body>
 <?php
 $servername = "localhost";
-$username = "username";
+$username = "root";
 $password = "";
+$dbname = "car_moto_service";
 
-// Create connection
-$conn = new mysqli($servername, $username, $password);
+$conn = new mysqli($servername, $username, $password, $dbname);
 
-// Check connection
 if ($conn->connect_error) {
-  die("Connection failed: " . $conn->connect_error);
+    die("Connection failed: " . $conn->connect_error);
+} 
+// this fetches the brands from the database
+$sql = "SELECT id, name FROM brands";
+$result = $conn->query($sql);
+
+if ($result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        echo '<option value="' . htmlspecialchars($row['name']) . '">' . htmlspecialchars($row['name']) . '</option>';
+    }
+} else {
+    echo '<option value="">No brands available</option>';
 }
-echo "Connected successfully";
+
+$conn->close();
 ?>
 </body>
 </html>
